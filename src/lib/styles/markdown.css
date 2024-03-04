@@ -1,0 +1,47 @@
+.prose h1 {
+	@apply scroll-m-16 text-3xl font-bold tracking-tight lg:text-4xl;
+}
+
+.prose p {
+	@apply leading-6 [&:not(:first-child)]:mt-5;
+}
+
+.prose h2 {
+	@apply mt-8 scroll-m-16 border-b pb-1 text-2xl font-semibold tracking-tight transition-colors first:mt-0;
+}
+
+.prose h2 a {
+	@apply font-medium text-primary underline;
+}
+
+.prose blockquote {
+	@apply mt-5 border-l-2 pl-4 italic;
+}
+
+.prose h3 {
+	@apply mt-6 scroll-m-16 text-xl font-semibold tracking-tight;
+}
+
+.prose ul {
+	@apply my-5 ml-4 list-disc [&>li]:mt-1;
+}
+
+.prose ul li {
+	@apply list-disc [&>li]:mt-1;
+}
+
+.prose table {
+	@apply w-full;
+}
+
+.prose table th {
+	@apply border px-3 py-1 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right;
+}
+
+.prose table td {
+	@apply border px-3 py-1 text-left [&[align=center]]:text-center [&[align=right]]:text-right;
+}
+
+.prose p:last-child {
+	@apply leading-6 [&:not(:first-child)]:mt-5;
+}
