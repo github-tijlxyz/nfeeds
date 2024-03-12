@@ -1,11 +1,12 @@
 <script lang="ts">
 	import * as Select from '@/lib/components/ui/select';
-	import type { Feed } from '@/lib/types';
+	import type { Feed } from '@/lib/feed';
 	import { feeds } from '@/lib/stores/feeds';
 	import FeedComponent from '@/lib/components/Feed.svelte';
 	import { Button } from '@/lib/components/ui/button';
 	import * as Drawer from '$lib/components/ui/drawer';
 	import Builder from '@/lib/components/Builder.svelte';
+	import Relays from '@/lib/components/Relays.svelte';
 
 	feeds.subscribe((a) => {
 		console.log(a);
@@ -21,8 +22,9 @@
 		</Select.Trigger>
 		<Select.Content>
 			<Select.Group>
-				{#each Object.values($feeds) as item}
-					<Select.Item on:click={() => (selectedFeed = item)} value={item.id}>{item.id}</Select.Item
+				{#each $feeds as item}
+					<Select.Item on:click={() => (selectedFeed = item)} value={item.name}
+						>{item.name}</Select.Item
 					>
 				{/each}
 			</Select.Group>
@@ -34,7 +36,9 @@
 			<Button builders={[builder]} variant="outline">Relays</Button>
 		</Drawer.Trigger>
 		<Drawer.Content>
-			<div class="mx-auto w-full max-w-sm">Soon(tm)</div>
+			<div class="mx-auto w-full max-w-sm">
+				<Relays />
+			</div>
 		</Drawer.Content>
 	</Drawer.Root>
 	<Drawer.Root>
@@ -51,6 +55,8 @@
 
 <div id="feed" class="lg:mx-[16.6667%]">
 	{#if selectedFeed}
-		<FeedComponent feed={selectedFeed} />
+		{#each [selectedFeed] as s (s.name)}
+			<FeedComponent feed={s} />
+		{/each}
 	{/if}
 </div>

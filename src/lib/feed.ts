@@ -1,51 +1,41 @@
-import { feedEvents, pool, readRelays } from '@/lib/stores/nostr';
-import { SimplePool, type NostrEvent, type Event } from 'nostr-tools';
-import { get } from 'svelte/store';
-import type { Feed } from './types';
+import { type NostrEvent } from 'nostr-tools';
+import type { Filter } from 'nostr-tools';
 
-export class Timeline {
-	private readonly $pool: SimplePool;
-	private readonly $readRelays: string[];
-	private readonly feed: Feed;
-	private readonly didSubscribe: boolean = false;
+export type Feed = {
+	name: string;
+	filters: Filter[];
+	fields: FeedFields;
+	options?: {
+		userUrl?: string;
+		postUrl?: string;
+		markdown?: boolean;
+	};
+};
 
-	constructor(feed: Feed) {
-		this.$pool = get(pool);
-		this.$readRelays = get(readRelays);
-		this.feed = feed;
+export type FeedFields = {
+	title?: FieldOptions[];
+	content?: FieldOptions[];
+	picture?: FieldOptions[];
+	tags?: { tag: string }[];
+};
 
-		const events = get(feedEvents);
-		events.set(feed, []);
-		feedEvents.set(events);
+export type FieldOptions = { tag: string } | 'content';
 
-		if (this.didSubscribe == false) {
-			this.didSubscribe = true;
-			this.subscribe();
-		}
-	}
-
-	private async subscribe(): Promise<() => void> {
-		const subscribe = this.$pool.subscribeMany(this.$readRelays, this.feed.filters, {
-			onevent: (nostrEvent: NostrEvent) => {
-				const event = nostrEvent as Event;
-				const events = get(feedEvents);
-				const existingEvents = events.get(this.feed) || [];
-
-				const isDuplicate = existingEvents.some((existingEvent) => existingEvent.id === event.id);
-
-				if (!isDuplicate) {
-					events.set(this.feed, [event, ...existingEvents]);
-					feedEvents.set(events);
+export function getBasicFieldContent(field: FieldOptions[], event: NostrEvent): string {
+	let content = '';
+	field.forEach((c) => {
+		if (content == '') {
+			if (typeof c == 'string') {
+				if (c == 'content') {
+					content = event.content;
+				}
+			} else if (c.tag) {
+				const d = event.tags.find((a) => a[0] == c.tag)?.[1];
+				if (d) {
+					content = d;
 				}
 			}
-		});
-
-		return () => {
-			subscribe.close();
-		};
-	}
-
-	public async more(): Promise<() => void> {
-		return () => {};
-	}
+		}
+	});
+	return content;
 }

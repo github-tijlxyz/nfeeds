@@ -8,12 +8,12 @@
 <div class="px-2 py-4">
 	{#if $builder.view == 'list'}
 		<div>
-			{#each Object.values($feeds) as feed}
+			{#each $feeds as feed}
 				<Button
 					class="mb-1 block w-full"
 					size="sm"
 					variant="outline"
-					on:click={() => builder.set({ view: 'editor', data: feed.id })}>{feed.id}</Button
+					on:click={() => builder.set({ view: 'editor', data: feed.name })}>{feed.name}</Button
 				>
 			{/each}
 			<Button
