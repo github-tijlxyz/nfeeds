@@ -6,9 +6,10 @@ export type Feed = {
 	filters: Filter[];
 	fields: FeedFields;
 	options?: {
+		markdown?: boolean;
+		// below not used anymore?
 		userUrl?: string;
 		postUrl?: string;
-		markdown?: boolean;
 	};
 };
 

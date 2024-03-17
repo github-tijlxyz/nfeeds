@@ -35,10 +35,7 @@
 			</div>
 		</div>
 	{:else if $metadata}
-		<a
-			href={(feed.options?.userUrl || defaultUserUrl).replace('{}', npub)}
-			class="flex items-center space-x-4"
-		>
+		<a href={`/${feed.name}/author/${pubkey}`} class="flex items-center space-x-4">
 			<Avatar.Root>
 				<Avatar.Image src={$metadata.picture} alt={$metadata.name} />
 				<Avatar.Fallback>{$metadata.name?.substring(0, 2)?.toUpperCase()}</Avatar.Fallback>

@@ -16,7 +16,8 @@ if (o !== null && o !== '') {
 			name: 'notes',
 			fields: {
 				content: ['content'],
-				tags: [{ tag: 't' }]
+				tags: [{ tag: 't' }],
+				picture: [{ tag: 'image' }]
 			},
 			filters: [
 				{
@@ -26,7 +27,7 @@ if (o !== null && o !== '') {
 			]
 		},
 		{
-			name: 'Long-form Content',
+			name: 'long-form',
 			filters: [
 				{
 					kinds: [30023],

@@ -42,11 +42,13 @@
 				<Card.Root class="mb-2 p-0 py-2">
 					<Card.Header class="pb-3 pl-5 pt-4">
 						{#if feed.fields.title}
-							<Card.Title
-								class="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0"
-							>
-								<FieldContent field={feed.fields.title} event={e} />
-							</Card.Title>
+							<a href={`${feed.name}/id/${e.id}`}>
+								<Card.Title
+									class="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0"
+								>
+									<FieldContent field={feed.fields.title} event={e} />
+								</Card.Title>
+							</a>
 						{/if}
 						<div class="py-1">
 							<UserProfile {feed} pubkey={e.pubkey} />
@@ -57,7 +59,7 @@
 									{#each feed.fields.tags as a}
 										{#each e?.tags as t}
 											{#if t[0] == a.tag}
-												<Badge>{t[1]}</Badge>
+												<Badge href={`/${feed.name}/tag/${t[0]}/${t[1]}`}>{t[1]}</Badge>
 											{/if}
 										{/each}
 									{/each}
@@ -67,22 +69,28 @@
 					</Card.Header>
 					<Card.Content class="overflow-hidden">
 						{#if feed.fields.content}
-							{#if feed.options?.markdown == true}
-								<div id="md-wrapper" class="prose">
-									<SvelteMarkdown source={getBasicFieldContent(feed.fields.content, e)} />
-								</div>
-							{:else}
-								<FieldContent field={feed.fields.content} event={e} />
-							{/if}
+							<a href={`/${feed.name}/id/${e.id}`}>
+								{#if feed.options?.markdown == true}
+									<div id="md-wrapper" class="prose">
+										<SvelteMarkdown source={getBasicFieldContent(feed.fields.content, e)} />
+									</div>
+								{:else}
+									<FieldContent field={feed.fields.content} event={e} />
+								{/if}
+							</a>
 						{/if}
 						{#if feed.fields.picture}
-							<AspectRatio ratio={16 / 9} class="bg-muted">
-								<img
-									class="h-full w-full rounded-md object-cover"
-									src={getBasicFieldContent(feed.fields.picture, e)}
-									alt=""
-								/>
-							</AspectRatio>
+							{#if getBasicFieldContent(feed.fields.picture, e) != ''}
+								<a href={`/${feed.name}/id/${e.id}`}>
+									<AspectRatio ratio={16 / 9} class="bg-muted">
+										<img
+											class="h-full w-full rounded-md object-cover"
+											src={getBasicFieldContent(feed.fields.picture, e)}
+											alt=""
+										/>
+									</AspectRatio>
+								</a>
+							{/if}
 						{/if}
 					</Card.Content>
 				</Card.Root>
